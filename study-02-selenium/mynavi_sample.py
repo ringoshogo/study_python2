@@ -94,24 +94,28 @@ def main():
             company_name = company_element.find_element_by_class_name("cassetteRecruit__name").text
             
             try:
-                __write_log("{}: ホームぺージの情報を取得します。".format(company_name), INFO)
+                __write_log(f"{company_name}: ホームぺージの情報を取得します。", INFO)
                 # 各社の情報を取得し、リストに追加する
                 __add_companyinfo_to_list(cur_list, company_element)
 
             # 課題6 エラー発生時にスキップして処理を継続する
             except:
-                __write_log("{}: ホームぺージの情報を取得中にエラーが発生しました。".format(company_name), ERROR)
+                __write_log(f"{company_name}: ホームぺージの情報を取得中にエラーが発生しました。", ERROR)
             finally:
                 exp_name_list.append(cur_list)
 
         # 課題3 2ページ以降の情報も取得
         # 次ページボタンがあれば押下する
         try:
-            next_page = driver.find_element_by_class_name("iconFont--arrowLeft")
-            driver.execute_script("window.scrollTo(0, " + str(next_page.location.get('y')) + ");")
-            next_page.click()
+            __write_log("次のページへ遷移します", INFO)
+            next_page_url = driver.find_element_by_class_name("iconFont--arrowLeft").get_attribute("href")
+            # 指摘取り込み
+            # driver.execute_script("window.scrollTo(0, " + str(next_page.location.get('y')) + ");")
+            # next_page.click()
+            driver.get(next_page_url)
+
         except:
-            __write_log("次のページへ遷移する際にエラーが発生しました。", ERROR)
+            __write_log("次のページは存在しません。", INFO)
             break
     
     # 課題5 pandasでCSV出力
@@ -129,11 +133,7 @@ def __write_log(text: str, log_level: int):
         log_lev = "[INFO]"
 
     with open('logs.txt', 'a', encoding='UTF-8') as file:
-        file.write("{log}[{dt}] {text} \n".format(
-            log=log_lev,
-            dt=datetime.datetime.now(),
-            text=text
-            ))
+        file.write(f"{log_lev}[{datetime.datetime.now()}] {text} \n")
 
 def __add_companyinfo_to_list(cur_list: list, company_element: any):
     """会社の情報を引数のリストに追加する"""
@@ -147,13 +147,10 @@ def __add_companyinfo_to_list(cur_list: list, company_element: any):
     for main_content in company_element.find_elements_by_tag_name("tr"):
         try:
             cur_list.append(
-                "{}:{}".format(
-                    main_content.find_element_by_tag_name("th").text,
-                    main_content.find_element_by_tag_name("td").text
-                )
+                f"{main_content.find_element_by_tag_name('th').text}:{main_content.find_element_by_tag_name('td').text}"
             )
         except:
-            __write_log("{} 取得中にエラーが発生しました".format(main_content.text), ERROR)
+            __write_log(f"{main_content.text} 取得中にエラーが発生しました", ERROR)
 
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
