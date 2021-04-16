@@ -1,16 +1,9 @@
 ### この課題はマイナビにアクセスしてキーワード検索を行い結果を取得するものです。
 
-説明動画：https://youtu.be/vNJ5DcrdvhM<br>
 Seleniumの基本：https://techacademy.jp/magazine/28392<br>
 Seleniumの応用：https://tanuhack.com/selenium/#URL<br>
 Pandasの基本：https://note.nkmk.me/pandas/<br>
 ログ出力(テキストファイル出力)：https://note.nkmk.me/python-file-io-open-with/<br>
-
-サンプルコードは、検索結果の１番上の会社名を取得するようになっています。
-下記の課題に従って、レベルアップさせてみましょう。
-
-Seleniumは副業案件においては、非常に重要な技術です。これを習得すれば月５万円程度の収入を得ることが可能です。
-頑張って学習してみましょう！
 
 ## １　難易度★★☆☆☆
 会社名以外の項目を取得して画面にprint文で表示してみましょう。
